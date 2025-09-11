@@ -5,7 +5,8 @@ import { ProductsService } from '../data-access/products.service';
   selector: 'app-product-list',
   imports: [],
   templateUrl: './product-list.html',
-  styles: ``
+  styles: ``,
+  providers: [ProductsService],
 })
 export default class ProductListComponent {
 private productService = inject(ProductsService);
