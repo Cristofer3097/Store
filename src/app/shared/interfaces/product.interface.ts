@@ -10,3 +10,9 @@ export interface Product {
         count: number;
     };
 }
+
+export interface ProductItemCart{
+    product: Product;
+    quantity: number;
+
+}
