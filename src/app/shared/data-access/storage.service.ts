@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
+import { Injectable, output } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { ProductItemCart } from "../interfaces/product.interface";
+import { Product, ProductItemCart } from "../interfaces/product.interface";
 
 @Injectable({
     providedIn: 'root'
@@ -13,4 +13,5 @@ export class StorageService {
     saveProducts(products: ProductItemCart[]): void {
         localStorage.setItem('products', JSON.stringify(products));
     }
+    
 }
