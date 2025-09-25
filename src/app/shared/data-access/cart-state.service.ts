@@ -13,17 +13,15 @@ loaded: boolean;
 })
 
 export class CartStateService {
-
     private _storageService = inject(StorageService);
-
     private initialState: state = {
         products: [],
         loaded: false
     };  
 
-    loadProducts$ = this._storageService.loadProduct().pipe(
-    map((products) => ({products, loaded: true})),
-)
+    loadProducts$ = this._storageService
+    .loadProduct().pipe(
+    map((products) => ({products, loaded: true})));
 
     state = signalSlice({
         initialState: this.initialState,
@@ -31,15 +29,14 @@ export class CartStateService {
         actionSources:{
             add: (state, action$: Observable<ProductItemCart>) =>
             action$.pipe(
-                map((product) => this.add(state, product)),
-                
-            ),
-
+                map((product) => this.add(state, product))),
         },
         effects: (state) => ({
             load: () => {
-                console.log('load products');
-            }
+                if (state().loaded) {
+                    this._storageService.saveProducts(state().products);
+                }
+            },
     })
     });
 
@@ -51,8 +48,9 @@ export class CartStateService {
 
         if (!isInCart) {
             return {
-                product: [...state().products, {...product, quantity:  + 1}],
-        };
+                 products: [...state().products, {...product, quantity:  + 1}],
+            };
+        
     }
     isInCart.quantity += 1;
     return{

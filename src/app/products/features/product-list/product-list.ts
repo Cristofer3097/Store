@@ -22,5 +22,9 @@ changePage() {
   this.productState.changePage$.next(page + 1);
 }
 addToCart(product: Product) {
+  this.cartState.add({
+    product,
+    quantity: 1,
+  });
 }
 }
