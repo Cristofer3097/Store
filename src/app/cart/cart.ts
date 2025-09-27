@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { CartItem } from './ui/cart-item/cart-item.js';
+import { Component, inject } from '@angular/core';
+import { CartItem } from './ui/cart-item/cart-item';
+import { CartStateService } from '../shared/data-access/cart-state.service';
 
 @Component({
   selector: 'app-cart',
@@ -8,5 +9,10 @@ import { CartItem } from './ui/cart-item/cart-item.js';
   styles: ``
 })
 export class Cart {
+  state = inject(CartStateService).state;
+
+  onRemove(id: number) {
+    this.state.remove(id);
+  }
 
 }
