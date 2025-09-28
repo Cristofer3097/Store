@@ -19,9 +19,9 @@ export class ProductsStateService {
         page:1,
     };
 
-    changePage$ = new Subject<number>();
+    nextPage$ = new Subject<number>();
 
-    loadProducts$ = this.changePage$.pipe(
+    loadProducts$ = this.nextPage$.pipe(
         startWith(1),
         switchMap((page) => this.productsService.getProducts(page)),
     map((products) => ({products, status:'success' as const})),
@@ -32,7 +32,7 @@ export class ProductsStateService {
     state = signalSlice({
         initialState: this.initialState,
         sources:[
-            this.changePage$.pipe(map((page) => ({page, status:'loading' as const}) )),
+            this.nextPage$.pipe(map((page) => ({page, status:'loading' as const}) )),
             this.loadProducts$, 
         ]
     })

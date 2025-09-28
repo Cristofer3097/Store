@@ -1,6 +1,7 @@
 import { Component, effect, inject, input } from '@angular/core';
 import { ProductsDetailStateService } from '../../data-access/products-detail-state.service';
 import { CurrencyPipe } from '@angular/common';
+import { CartStateService } from '../../../shared/data-access/cart-state.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -10,6 +11,7 @@ import { CurrencyPipe } from '@angular/common';
 })
 export default class ProductDetailComponent {
   productDetailState = inject(ProductsDetailStateService).state;
+  cartState = inject(CartStateService).state;
 
   id= input.required<string>();
 
@@ -17,5 +19,12 @@ export default class ProductDetailComponent {
     effect(() => {
       this.productDetailState.getById(this.id());
   });
-  }
+  
+}
+addtoCart(){
+  this.cartState.add({
+      product: this.productDetailState.product()!,
+      quantity: 1
+    });
+}
 }

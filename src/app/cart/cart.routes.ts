@@ -4,4 +4,5 @@ export default[
     {
         path: '',
         loadComponent: () => import('./cart').then(c => c.Cart)}
+        
 ] as Routes;

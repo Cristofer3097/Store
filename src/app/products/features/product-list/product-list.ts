@@ -17,9 +17,9 @@ export default class ProductListComponent {
   productState = inject(ProductsStateService);
   cartState = inject(CartStateService).state;
 
-changePage() {
+nextPage() {
   const page = this.productState.state().page;
-  this.productState.changePage$.next(page + 1);
+  this.productState.nextPage$.next(page + 1);
 }
 addToCart(product: Product) {
   this.cartState.add({
