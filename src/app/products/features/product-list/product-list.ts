@@ -3,13 +3,13 @@ import { ProductsStateService } from '../../data-access/products-state.service';
 import { ProductCard } from '../../ui/product-card/product-card';
 import { CartStateService } from '../../../shared/data-access/cart-state.service';
 import { Product } from '../../../shared/interfaces/product.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-list',
-  imports: [ProductCard],
+  imports: [ProductCard,  CommonModule],
   templateUrl: './product-list.html',
   styles: ``,
-  providers: [ProductsStateService]
   
 })
 

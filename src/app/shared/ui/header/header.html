@@ -14,14 +14,35 @@
     </button>
     <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
       <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  ">
-        <li>
-          <a routerLink="/" 
-          routerLinkActive="!text-red-500"
-          [routerLinkActiveOptions]="{exact: true}"
-          class="block py-2 px-3 text-white  rounded-sm md:bg-transparent hover:text-red-700 md:p-0 dark:bg-red-600 md:dark:bg-transparent" 
-          aria-current="page">
+         <li class="relative group">
+          <button 
+            routerLink="/" 
+            (click)="selectCategory(null)" 
+            class="flex items-center justify-between w-full py-2 px-3 text-white rounded-sm md:hover:bg-transparent md:border-0 hover:text-red-700 md:p-0 md:w-auto"
+            routerLinkActive="!text-red-500"
+            [routerLinkActiveOptions]="{exact: true}">
+            Productos
+            <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+            </svg>
+          </button>
           
-            Productos</a>
+          <div class="absolute z-10 hidden group-hover:block font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownLargeButton">
+              <li>
+                <a href="#" (click)="selectCategory(null); $event.preventDefault()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                  Todos
+                </a>
+              </li>
+              @for (category of categories(); track category) {
+                <li>
+                  <a href="#" (click)="selectCategory(category); $event.preventDefault()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    {{ category | titlecase }}
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
         </li>
 
         <li>
