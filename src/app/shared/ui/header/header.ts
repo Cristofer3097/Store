@@ -1,14 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { Cart } from '../../../cart/cart';
 import { CartStateService } from '../../data-access/cart-state.service';
 import { ProductsService } from '../../../products/data-access/products.service';
 import { ProductsStateService } from '../../../products/data-access/products-state.service';
 import { CommonModule } from '@angular/common';
+import { Search } from '../search/search'; 
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule,RouterLink, RouterLinkActive],
+  imports: [CommonModule,RouterLink, RouterLinkActive, Search],
   templateUrl: './header.html',
   styles: ``
 })
