@@ -14,13 +14,19 @@ import { CommonModule } from '@angular/common';
 })
 
 export default class ProductListComponent {
-  productState = inject(ProductsStateService);
+    private productStateService = inject(ProductsStateService);
+
+  productState = this.productStateService.state; 
   cartState = inject(CartStateService).state;
 
-nextPage() {
-  const page = this.productState.state().page;
-  this.productState.nextPage$.next(page + 1);
-}
+ nextPage() {
+    this.productState.nextPage();
+  }
+
+  previousPage() {
+    this.productState.previousPage();
+  }
+
 addToCart(product: Product) {
   this.cartState.add({
     product,

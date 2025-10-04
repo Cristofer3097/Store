@@ -1,24 +1,41 @@
 <div class="mx-auto max-w-screen-xl">
-
-    @switch (productState.state.status()) {
+    @switch (productState.status()) {
         @case('loading'){
-        <p>Loading...</p>
-    }
-        @case('error'){
-        <p>Error loading products.</p>
+            <p class="text-white text-center text-xl">Loading...</p>
         }
-
+        @case('error'){
+            <p class="text-white text-center text-xl">Error loading products.</p>
+        }
         @default {
-            <div class="grid grid-cols-[repeat(4,300px)] gap-6"> 
-@for(product of productState.state().products; track product ) {
-    <app-product-card class="block" [product]="product"  (addToCart)="addToCart($event)"/>
-}
-</div>
-<div class="flex justify-end my-6">
-<button type="button" 
-(click)="nextPage()"
-class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-Siguiente pagina</button></div>
+            <div class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 justify-items-center"> 
+                @for(product of productState.products(); track product.id ) {
+                    <app-product-card class="block" [product]="product" (addToCart)="addToCart($event)"/>
+                }
+            </div>
+            
+            <!-- Contenedor de Paginación -->
+            <div class="flex justify-between my-8">
+                <!-- Botón Página Anterior: solo aparece si no es la primera página -->
+                @if (productState.page() > 1) {
+                    <button type="button" 
+                            (click)="previousPage()"
+                            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Página Anterior
+                    </button>
+                } @else {
+                    <!-- Div vacío para mantener el botón de "Siguiente" a la derecha -->
+                    <div></div> 
+                }
 
-}
+                <!-- Botón Siguiente Página: solo aparece si hay más productos -->
+                @if (productState.hasMoreProducts()) {
+                    <button type="button" 
+                            (click)="nextPage()"
+                            class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Siguiente Página
+                    </button>
+                }
+            </div>
+        }
     }
+</div>

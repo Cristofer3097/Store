@@ -2,40 +2,57 @@ import { Injectable, inject } from "@angular/core";
 import { Product } from "../../shared/interfaces/product.interface";
 import { signalSlice } from "ngxtension/signal-slice";
 import { ProductsService } from "./products.service";
-import { catchError, map, of, startWith, Subject, switchMap, combineLatest, Observable } from "rxjs";
-
+import { catchError, map, of, startWith, Subject, switchMap, combineLatest, Observable  } from "rxjs";
+import { LIMIT } from "./products.service";
 interface State {
     products: Product[];
     status: 'loading' | 'error' | 'success';
     page: number;
-        selectedCategory: string | null;
-
+    selectedCategory: string | null;
+    hasMoreProducts: boolean; 
 }
 
 @Injectable()
 export class ProductsStateService {
     private productsService = inject(ProductsService);
+    
     private initialState: State = {
         products: [],
         status: 'loading' as const,
-        page:1,
+        page: 1,
         selectedCategory: null,
+        hasMoreProducts: true, 
     };
-
-    nextPage$ = new Subject<number>();
-    previousPage$ = new Subject<number>();
-    category$ = new Subject<string | null>();
-
-    private params$ = combineLatest([
-        this.nextPage$.pipe(startWith(1)),
+//eventos de paginación y categoría
+    private page$ = new Subject<number>();
+    private category$ = new Subject<string | null>();
+// Combina los parámetros para recargar los productos cuando cambien
+     private params$ = combineLatest([
+        this.page$.pipe(startWith(1)),
         this.category$.pipe(startWith(null as string | null)),
     ]);
-
-     private loadProducts$ = this.params$.pipe(
+//carga los productos desde la API
+      private loadProducts$ = this.params$.pipe(
         switchMap(([page, category]) => 
             this.productsService.getProducts(page, category).pipe(
-                map((products) => ({ products, status: 'success' as const })),
-                catchError(() => of({ status: 'error' as const, products: [] }))
+                map((allProducts) => {
+                    // 1. Verificamos si hay más productos basándonos en la lista completa
+                    const hasMore = category ? false : allProducts.length === page * LIMIT;
+
+                    // 2. Calculamos desde dónde empezar a "recortar" la lista
+                    const startIndex = (page - 1) * LIMIT;
+                    
+                    // 3. Obtenemos solo los productos para la página actual
+                    const pageProducts = allProducts.slice(startIndex);
+
+                    // 4. Retornamos el estado actualizado con los productos correctos
+                    return { 
+                        products: pageProducts, 
+                        status: 'success' as const, 
+                        hasMoreProducts: hasMore 
+                    };
+                }),
+                catchError(() => of({ status: 'error' as const, products: [], hasMoreProducts: false }))
             )
         )
     );
@@ -43,19 +60,36 @@ export class ProductsStateService {
     state = signalSlice({
         initialState: this.initialState,
         sources: [
-            this.nextPage$.pipe(map((page) => ({ page, status: 'loading' as const }))),
-            this.loadProducts$,
+            this.loadProducts$, // Fuente principal de datos
         ],
         actionSources: {
+            // Acción para ir a la página siguiente
+            nextPage: (state, action$: Observable<void>) =>
+                action$.pipe(
+                    map(() => {
+                        const newPage = state().page + 1;
+                        this.page$.next(newPage);
+                        return { page: newPage, status: 'loading' as const };
+                    })
+                ),
+            // Acción para ir a la página anterior
+            previousPage: (state, action$: Observable<void>) =>
+                action$.pipe(
+                    map(() => {
+                        const newPage = state().page - 1;
+                        this.page$.next(newPage);
+                        return { page: newPage, status: 'loading' as const };
+                    })
+                ),
+            // filtra por categoría
             filterByCategory: (_state, action$: Observable<string | null>) =>
                 action$.pipe(
                     map((category) => {
-                        // Dispara el subject para recargar los productos.
-                        this.category$.next(category);
-                        // Retorna el cambio de estado síncrono.
+                        this.page$.next(1); // Resetea el stream de página a 1
+                        this.category$.next(category); // Dispara el filtro de categoría
                         return {
                             selectedCategory: category,
-                            page: 1, // Resetea la página.
+                            page: 1, // Actualiza el estado de la página a 1
                             status: 'loading' as const,
                         };
                     })
