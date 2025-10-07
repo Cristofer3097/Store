@@ -8,6 +8,7 @@ import { Search } from '../search/search';
 
 @Component({
   selector: 'app-header',
+   standalone: true,
   imports: [CommonModule,RouterLink, RouterLinkActive, Search],
   templateUrl: './header.html',
   styles: ``
