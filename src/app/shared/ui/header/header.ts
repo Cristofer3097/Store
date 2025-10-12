@@ -3,13 +3,14 @@ import {  Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CartStateService } from '../../data-access/cart-state.service';
 import { ProductsService } from '../../../products/data-access/products.service';
 import { ProductsStateService } from '../../../products/data-access/products-state.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Search } from '../search/search'; 
+import { HeaderPhone } from './header-phone/header-phone';
 
 @Component({
   selector: 'app-header',
    standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, Search],
+  imports: [CommonModule, RouterLink, CurrencyPipe, RouterLinkActive, Search, HeaderPhone],
   templateUrl: './header.html',
   styles: ``
 })
@@ -20,7 +21,6 @@ export class Header {
     private router = inject(Router);
 
   categories = signal<string[]>([]);
-  isDropdownOpen = signal(false);
 
   ngOnInit(): void {
     this.productsService.getCategories().subscribe(cats => {
@@ -28,14 +28,8 @@ export class Header {
     });
   }
 
-  toggleDropdown() {
-    this.isDropdownOpen.update(open => !open);
-  }
-
-  selectCategory(category: string | null) {
+   selectCategory(category: string | null) {
     this.router.navigate(['/']); 
     this.productStateService?.state.filterByCategory(category);
-    this.isDropdownOpen.set(false); 
   }
 }
-
