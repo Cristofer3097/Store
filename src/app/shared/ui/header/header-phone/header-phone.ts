@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter, inject, signal } from '@angular
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Search } from '../../search/search';
+import { CartStateService } from '../../../data-access/cart-state.service';
+import { ProductItemCart } from '../../../interfaces/product.interface';
 
 @Component({
   selector: 'app-header-phone',
@@ -18,10 +20,15 @@ export class HeaderPhone {
   @Output() categorySelected = new EventEmitter<string | null>();
 
   private router = inject(Router);
+   private _cartStateService = inject(CartStateService);
   
   // La lógica para abrir/cerrar el menú ahora vive aquí
   isDropdownOpen = signal(false);
+ showCategories = signal(false);
 
+ toggleCategories() {
+    this.showCategories.update(current => !current);
+  }
   toggleDropdown() {
     this.isDropdownOpen.update(open => !open);
   }
@@ -36,5 +43,12 @@ export class HeaderPhone {
   goToCart(): void {
     this.router.navigate(['/cart']);
     this.isDropdownOpen.set(false);
+  }
+ onIncrement(product: ProductItemCart) {
+    this._cartStateService.state.upadate({ ...product, quantity: product.quantity + 1 });
+  }
+
+  onDecrease(product: ProductItemCart) {
+    this._cartStateService.state.upadate({ ...product, quantity: product.quantity - 1 });
   }
 }

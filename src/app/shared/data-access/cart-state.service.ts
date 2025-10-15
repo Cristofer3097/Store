@@ -77,12 +77,20 @@ export class CartStateService {
         };
     }
     private update(state: Signal<state>, product: ProductItemCart) {
+        if (product.quantity <= 0) {
+            return {
+                products: state().products.filter(
+                    (p) => p.product.id !== product.product.id
+                ),
+            };
+        }
+
         const products = state().products.map((productInCart) => {
             if (productInCart.product.id === product.product.id) {
-                return {...productInCart, quantity: product.quantity};
+                return { ...productInCart, quantity: product.quantity };
             }
             return productInCart;
         });
-        return {products};
+        return { products };
     }
 }

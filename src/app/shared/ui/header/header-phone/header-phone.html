@@ -1,4 +1,3 @@
-<p>header-phone works!</p>
 <div class="flex items-center md:hidden">
   <button (click)="toggleDropdown()" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg focus:outline-none">
     <span class="sr-only">Open main menu</span>
@@ -7,6 +6,7 @@
     </svg>
   </button>
 </div>
+
 
 @if (isDropdownOpen()) {
   <div (click)="toggleDropdown()" class="fixed inset-0 bg-transparent z-20 md:hidden"></div>
@@ -19,49 +19,65 @@
     'translate-x-full': !isDropdownOpen()
   }"
 >
-  <div class="overflow-y-auto">
-    <ul class="flex flex-col space-y-6 text-white">
-      <li class="flex justify-end mb-4">
-        <button (click)="toggleDropdown()" class="p-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
-      </li>
-      <li>
-        <button (click)="selectCategory(null)" class="w-full text-left">Todos los Productos</button>
-      </li>
-      @for (category of categories; track category) {
-        <li>
-          <a href="#" (click)="selectCategory(category); $event.preventDefault()">{{ category | titlecase }}</a>
-        </li>
-      }
-      <li class="pt-4 mb-4 border-t border-gray-700">
-        <app-search />
-      </li>
-    </ul>
+  <div class="flex justify-end mb-4">
+    <button (click)="toggleDropdown()" class="p-2 text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
   </div>
+  
+  <div class="flex-grow overflow-y-auto text-white">
+    <button (click)="toggleCategories()" class="w-full flex justify-between items-center text-left py-2">
+      <span class="text-lg">Categorías</span>
+      <svg class="w-4 h-4 transition-transform" [class.rotate-180]="showCategories()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+      </svg>
+    </button>
+    
+    @if(showCategories()) {
+      <ul class="pl-4 mt-2 space-y-4 text-gray-300">
+        <li><button (click)="selectCategory(null)" class="hover:text-white">Todos los Productos</button></li>
+        @for (category of categories; track category) {
+          <li><button (click)="selectCategory(category)" class="hover:text-white">{{ category | titlecase }}</button></li>
+        }
+      </ul>
+    }
+    
+    <div class="pt-4 mb-4 border-t border-gray-700">
+      <app-search />
+    </div>
+    
 
   <div class="flex-shrink-0 pt-4 border-t border-gray-700 text-white">
-    <h3 class="text-lg font-semibold mb-3">Carrito</h3>
-    @if(cartState.count() > 0) {
-      <div class="space-y-3 mb-4 max-h-48 overflow-y-auto">
+     @if(cartState.count() > 0) {
+      <div class="text-center mb-4">
+        <span class="text-lg">Subtotal:</span><p>
+        <span class="text-xl font-bold ml-2">{{ cartState.price() | currency }}</span></p>
+      </div>
+
+      <div class="flex-grow overflow-y-auto space-y-4">
         @for(item of cartState.products(); track item.product.id) {
-          <div class="flex justify-between items-center text-sm">
-            <span class="truncate pr-2">{{ item.product.title }} (x{{ item.quantity }})</span>
-            <span class="font-medium whitespace-nowrap">{{ (item.product.price * item.quantity) | currency }}</span>
+          <div class="flex items-center gap-4">
+            <img [src]="item.product.image" class="w-16 h-16 object-contain rounded-md bg-white p-1">
+            <div class="flex-grow min-w-0">
+              <p class="text-xs font-bold mb-4">{{ item.product.price | currency }}</p>
+              <div class="flex items-center mt-1">
+                <button (click)="onDecrease(item)" class="size-6 bg-gray-700 rounded-full flex items-center justify-center">-</button>
+                <span class="w-8 text-center">{{ item.quantity }}</span>
+                <button (click)="onIncrement(item)" class="size-6 bg-gray-700 rounded-full flex items-center justify-center">+</button>
+              </div>
+            </div>
           </div>
         }
       </div>
-      <div class="space-y-3">
-        <div class="flex justify-between font-bold text-base border-t border-gray-600 pt-2">
-          <span>Total</span>
-          <span>{{ cartState.price() | currency }}</span>
-        </div>
-        <button (click)="goToCart()" class="w-full text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
-          Proceder al Carrito
+      
+      <div class="mt-auto pt-4">
+        <button (click)="goToCart()" class="w-full text-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg">
+          Ir al carrito
         </button>
       </div>
+
     } @else {
-      <p class="text-sm text-gray-400">Tu carrito está vacío.</p>
+      <p class="text-center text-gray-400 mt-10">Tu carrito está vacío.</p>
     }
   </div>
 </div>
