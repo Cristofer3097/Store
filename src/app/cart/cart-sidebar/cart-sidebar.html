@@ -1,23 +1,23 @@
-<div class="fixed top-0 right-0 h-full w-72 bg-black p-5 z-20 text-white flex flex-col shadow-lg border-l border-gray-700">
+<div class="fixed top-0 right-0 h-full w-72 bg-gray-900 p-5 z-20 text-white flex flex-col shadow-lg border-l border-gray-700">
   
-  <div class="flex-shrink-0 text-white flex flex-col h-full">
+  <div class="flex-shrink-0 text-white flex flex-col h-full ">
     @if(cartState.count() > 0) {
       <div class="text-center mb-4">
         <span class="text-lg">Subtotal:</span><p>
         <span class="text-xl font-bold ml-2">{{ cartState.price() | currency }}</span></p>
       </div>
 
-      <div class="flex-grow overflow-y-auto space-y-4">
+      <div class="flex-grow overflow-y-auto space-y-4 ">
         @for(item of cartState.products(); track item.product.id) {
-          <div class="flex items-center gap-4">
-            <img [src]="item.product.image" class="w-16 h-16 object-contain rounded-md bg-white p-1">
-            <div class="flex-grow min-w-0">
+          <div class="flex items-center gap-4 border-t pt-4 ">
+            <img [src]="item.product.image" class="w-16 h-16 object-contain rounded-md bg-white p-1 ">
+            <div class="flex-grow min-w-0 ">
               <p class="text-sm truncate">{{ item.product.title }}</p>
               <p class="text-xs font-bold">{{ item.product.price | currency }}</p>
               <div class="flex items-center mt-1">
                 <button (click)="onDecrease(item)" class="size-6 bg-gray-700 rounded-full flex items-center justify-center">-</button>
-                <span class="w-8 text-center">{{ item.quantity }}</span>
-                <button (click)="onIncrement(item)" class="size-6 bg-gray-700 rounded-full flex items-center justify-center">+</button>
+                <span class="w-8 text-center ">{{ item.quantity }}</span>
+                <button (click)="onIncrement(item)" class="size-6 bg-gray-700 rounded-full flex items-center justify-center ">+</button>
               </div>
             </div>
           </div>

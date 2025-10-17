@@ -1,12 +1,12 @@
-
-<div class="flex-col min-h-screen transition-all duration-300"
+<div class="min-h-screen transition-all duration-300"
   [class.md:pr-72]="cartState.count() > 0 && !isCartPage">
   <app-header />
-    <main>
-      <router-outlet />
-    </main>
+  <main>
+    <router-outlet />
+  </main>
 </div>
-@if (cartState.count() > 0) {
+
+@if (cartState.count() > 0 && !isCartPage) {
   <div class="hidden md:block">
      <app-cart-sidebar />
   </div>
