@@ -1,7 +1,13 @@
 
-<div class="flex-col min-h-screen">
+<div class="flex-col min-h-screen transition-all duration-300"
+  [class.md:pr-72]="cartState.count() > 0 && !isCartPage">
   <app-header />
     <main>
       <router-outlet />
     </main>
 </div>
+@if (cartState.count() > 0) {
+  <div class="hidden md:block">
+     <app-cart-sidebar />
+  </div>
+}

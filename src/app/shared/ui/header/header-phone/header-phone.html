@@ -27,17 +27,17 @@
   
   <div class="flex-grow overflow-y-auto text-white">
     <button (click)="toggleCategories()" class="w-full flex justify-between items-center text-left py-2">
-      <span class="text-lg">Categorías</span>
+      <span class="text-lg ">Categorías</span>
       <svg class="w-4 h-4 transition-transform" [class.rotate-180]="showCategories()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
       </svg>
     </button>
     
     @if(showCategories()) {
-      <ul class="pl-4 mt-2 space-y-4 text-gray-300">
-        <li><button (click)="selectCategory(null)" class="hover:text-white">Todos los Productos</button></li>
+      <ul class="pl-4 mt-2 space-y-4 text-gray-300  mb-4 ">
+        <li><button (click)="selectCategory(null)" class="hover:text-red-500 ">Todos los Productos</button></li>
         @for (category of categories; track category) {
-          <li><button (click)="selectCategory(category)" class="hover:text-white">{{ category | titlecase }}</button></li>
+          <li><button (click)="selectCategory(category)" class="hover:text-red-500 ">{{ category | titlecase }}</button></li>
         }
       </ul>
     }

@@ -6,6 +6,7 @@ import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-cart',
+  standalone: true,
   imports: [CartItem, CurrencyPipe],
   templateUrl: './cart.html',
   styles: ``
