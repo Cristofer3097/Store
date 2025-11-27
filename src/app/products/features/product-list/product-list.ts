@@ -33,4 +33,7 @@ addToCart(product: Product) {
     quantity: 1,
   });
 }
+
+
+
 }

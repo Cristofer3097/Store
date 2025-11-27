@@ -3,14 +3,14 @@ import {  Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CartStateService } from '../../data-access/cart-state.service';
 import { ProductsService } from '../../../products/data-access/products.service';
 import { ProductsStateService } from '../../../products/data-access/products-state.service';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Search } from '../search/search'; 
 import { HeaderPhone } from './header-phone/header-phone';
 
 @Component({
   selector: 'app-header',
    standalone: true,
-  imports: [CommonModule, RouterLink, CurrencyPipe, RouterLinkActive, Search, HeaderPhone],
+  imports: [CommonModule, RouterLink, RouterLinkActive, Search, HeaderPhone],
   templateUrl: './header.html',
   styles: ``
 })

@@ -2,7 +2,7 @@ import { inject, Injectable, Signal } from "@angular/core";
 import { ProductItemCart } from "../interfaces/product.interface";
 import { signalSlice } from "ngxtension/signal-slice";
 import { StorageService } from "./storage.service";
-import { count, map, Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 
 interface state{
 products: ProductItemCart[];
@@ -41,6 +41,13 @@ export class CartStateService {
                     map((id) => this.remove(state, id))),
                     upadate: (state, action$: Observable<ProductItemCart>) => 
                         action$.pipe(map((product) => this.update(state, product))),
+                    clear: (_state, action$: Observable<void>) =>
+                action$.pipe(
+                    map(() => ({
+                        products: [], // Vaciamos el array
+                        loaded: true
+                    }))
+                ),
         },
         effects: (state) => ({
             load: () => {
@@ -84,6 +91,7 @@ export class CartStateService {
                 ),
             };
         }
+        
 
         const products = state().products.map((productInCart) => {
             if (productInCart.product.id === product.product.id) {

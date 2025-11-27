@@ -40,14 +40,14 @@ export class ProductsStateService {
 
 //carga los productos desde la API
       private loadProducts$ = this.params$.pipe(
-        switchMap(([page, category, search]) => { // MODIFICADO: ahora recibe 'search'
-            // --- LÓGICA DE BÚSQUEDA ---
+        switchMap(([page, category, search]) => {
+            //  BÚSQUEDA 
             if (search) {
                 return this.productsService.getProducts(1, undefined, search).pipe(
                     map(filteredProducts => ({
                         products: filteredProducts,
                         status: 'success' as const,
-                        hasMoreProducts: false, // No hay paginación en la búsqueda
+                        hasMoreProducts: false, 
                     })),
                     catchError(() => of({ status: 'error' as const, products: [], hasMoreProducts: false }))
                 );
@@ -72,10 +72,10 @@ export class ProductsStateService {
     state = signalSlice({
         initialState: this.initialState,
         sources: [
-            this.loadProducts$, // Fuente principal de datos
+            this.loadProducts$, 
         ],
         actionSources: {
-            // Acción para ir a la página siguiente
+            //página siguiente
             nextPage: (state, action$: Observable<void>) =>
                 action$.pipe(
                     map(() => {
@@ -84,7 +84,7 @@ export class ProductsStateService {
                         return { page: newPage, status: 'loading' as const };
                     })
                 ),
-            // Acción para ir a la página anterior
+            // página anterior
             previousPage: (state, action$: Observable<void>) =>
                 action$.pipe(
                     map(() => {
@@ -97,12 +97,12 @@ export class ProductsStateService {
             filterByCategory: (_state, action$: Observable<string | null>) =>
                 action$.pipe(
                     map((category) => {
-                        this.page$.next(1); // Resetea el stream de página a 1
-                        this.category$.next(category); // Dispara el filtro de categoría
+                        this.page$.next(1); 
+                        this.category$.next(category); 
                         this.search$.next(null);
                         return {
                             selectedCategory: category,
-                            page: 1, // Actualiza el estado de la página a 1
+                            page: 1, 
                             status: 'loading' as const,
                         };
                     })
@@ -111,7 +111,7 @@ export class ProductsStateService {
                 map((query) => {
                     this.page$.next(1); // Resetea la página
                     this.category$.next(null); // Limpia la categoría
-                    this.search$.next(query); // Dispara la búsqueda
+                    this.search$.next(query); 
                     return {
                         searchQuery: query,
                         page: 1,
