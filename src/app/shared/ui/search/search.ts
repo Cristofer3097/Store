@@ -16,8 +16,8 @@ export class Search implements OnInit {
 
   ngOnInit(): void {
     this.searchControl.valueChanges.pipe(
-      debounceTime(400), // Espera 400ms después de la última pulsación
-      distinctUntilChanged() // Solo emite si el valor ha cambiado
+      debounceTime(400), // Espera 400ms después de teclear
+      distinctUntilChanged()//Evita datos repetidos
     ).subscribe(value => {
       this.productsState.state.search(value || '');
     });

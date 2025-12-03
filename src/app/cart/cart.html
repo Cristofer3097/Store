@@ -52,12 +52,12 @@
 
           <div class="flex items-center justify-center gap-2">
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> o </span>
-            <a href="#" title="" class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
-              Realizar Pago
-              <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
-              </svg>
-            </a>
+            <button 
+            (click)="onCheckout()" class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
+            Realizar Pago
+            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
+            </svg></button>
           </div>
         </div>
 
@@ -77,5 +77,27 @@
       </div>
     </div>
     }
-  </div>
-</section>
+    <div class="mt-12 mb-8">
+        
+        <hr class="h-1 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 border-0 rounded mb-6">
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            Productos Recomendados
+        </h2>
+
+        @defer (on viewport) {
+            <app-recommended />
+        } 
+        @placeholder {
+            <div class="h-64 w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg flex items-center justify-center text-gray-400">
+                Cargando recomendaciones...
+            </div>
+        }
+        @loading (minimum 1s) {
+            <div class="flex justify-center py-10">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+            </div>
+        }
+    </div>
+
+  </div> </section>
