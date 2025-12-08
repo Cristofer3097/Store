@@ -9,9 +9,13 @@ export const routes: Routes = [
     path: 'cart',
     loadChildren: () => import('./cart/cart.routes'),
 },
+{ 
+    path: 'wishlist', 
+    loadComponent: () => import('./wishlist/wishlist').then(m => m.WishlistComponent)
+    },
 {
     path: '**',
     redirectTo: '',
-}
+},
 
 ];

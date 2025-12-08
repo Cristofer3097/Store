@@ -13,5 +13,14 @@ export class StorageService {
     saveProducts(products: ProductItemCart[]): void {
         localStorage.setItem('products', JSON.stringify(products));
     }
+
+    loadWishlist(): Observable<Product[]> {
+        const rawWishlist = localStorage.getItem('wishlist');
+        return of(rawWishlist ? JSON.parse(rawWishlist) : []);
+    }
+
+    saveWishlist(products: Product[]): void {
+        localStorage.setItem('wishlist', JSON.stringify(products));
+    }
     
 }

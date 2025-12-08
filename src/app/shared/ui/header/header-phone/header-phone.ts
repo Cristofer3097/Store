@@ -4,6 +4,7 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Search } from '../../search/search';
 import { CartStateService } from '../../../data-access/cart-state.service';
 import { ProductItemCart } from '../../../interfaces/product.interface';
+import { WishlistStateService } from '../../../data-access/wishlist-state.service';
 
 @Component({
   selector: 'app-header-phone',
@@ -15,6 +16,7 @@ export class HeaderPhone {
   // Recibe datos del componente padre (header.ts)
   @Input({ required: true }) categories: string[] = [];
   @Input({ required: true }) cartState: any;
+  wishlistState = inject(WishlistStateService).state;
 
   // Emite un evento cuando se selecciona una categoría
   @Output() categorySelected = new EventEmitter<string | null>();

@@ -6,6 +6,7 @@ import { ProductsStateService } from '../../../products/data-access/products-sta
 import { CommonModule } from '@angular/common';
 import { Search } from '../search/search'; 
 import { HeaderPhone } from './header-phone/header-phone';
+import { WishlistStateService } from '../../data-access/wishlist-state.service';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +19,7 @@ export class Header {
   cartState = inject(CartStateService).state;
   productsService = inject(ProductsService);
   productStateService = inject(ProductsStateService, { optional: true });
+  wishlistState = inject(WishlistStateService).state;
     private router = inject(Router);
 
   categories = signal<string[]>([]);
