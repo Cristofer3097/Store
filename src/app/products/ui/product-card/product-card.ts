@@ -2,9 +2,10 @@ import { Component, inject, input, output } from '@angular/core';
 import { Product } from '../../../shared/interfaces/product.interface';
 import { RouterLink } from "@angular/router";
 import { WishlistStateService } from '../../../shared/data-access/wishlist-state.service';
+import { CurrencyPipe } from '@angular/common';
 @Component({
   selector: 'app-product-card',
-  imports: [RouterLink],
+  imports: [RouterLink, CurrencyPipe],
   templateUrl: './product-card.html',
   styles: ``
 })
